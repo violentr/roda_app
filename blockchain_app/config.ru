@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 require 'rest_client'
+require_relative 'lib/database'
 require 'json'
 require "roda"
 require "sequel"
 
 class BlockChainApp < Roda
 
-  database = Dir.pwd + '/db/blockchain.sqlite3'
-  DB = Sequel.connect(adapter: "sqlite", database: database, host: "127.0.0.1")
+  database = ::Database.start
 
   route do |r|
     r.root do
@@ -15,7 +15,7 @@ class BlockChainApp < Roda
     end
 
     r.on "account" do
-      @accounts = DB[:accounts]
+      @accounts = database[:accounts]
       @accounts.all.each do |_account|
         puts "Address #{_account[:address]} Balance: #{_account[:balance]}"
       end
