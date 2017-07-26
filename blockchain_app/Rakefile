@@ -1,0 +1,28 @@
+#!/usr/bin/env rake
+require "roda"
+require "sequel"
+
+namespace :db do
+  database = Dir.pwd + "/db/blockchain.sqlite3"
+  table = :accounts
+
+  task :create_table do
+    DB = Sequel.connect(adapter: "sqlite", database: database, host: "127.0.0.1")
+    puts "Creating table '#{table.to_s}' in " + database.upcase
+
+    DB.create_table table do
+      primary_key :id
+      String :address
+      Integer :balance
+    end
+    puts "Table '#{table.to_s}' was created in " + database.upcase
+  end
+
+  task :drop_table do
+    DB = Sequel.connect(adapter: "sqlite", database: database, host: "127.0.0.1")
+    puts "Droping table '#{table.to_s}' from" + database.upcase
+
+    DB.drop_table table
+    puts "Table '#{table.to_s}' was dropped from" + database.upcase
+  end
+end
