@@ -6,4 +6,5 @@ gem 'rest-client'
 gem 'roda'
 gem 'sqlite3'
 gem 'sequel'
+gem 'awesome_print'
 # gem "rails"
