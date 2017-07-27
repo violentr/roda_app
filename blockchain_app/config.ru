@@ -16,9 +16,6 @@ class BlockChainApp < Roda
 
     r.on "account" do
       @accounts = database[:accounts]
-      @accounts.all.each do |_account|
-        puts "Address #{_account[:address]} Balance: #{_account[:balance]}"
-      end
 
       r.get "show" do
         "#{@accounts.all.to_json}"
@@ -26,11 +23,11 @@ class BlockChainApp < Roda
 
       r.post "create" do
         ethernum = r.params["ethernum"]
-        url = 'https://etherchain.org/api/account/'+ethernum.to_s
+        url = 'https://etherchain.org/api/account/' + ethernum.to_s
         response = ::RestClient.get(url)
         output = ::JSON.parse(response.body)
-        account = OpenStruct.new(output['data']&.first)
         return {} if output["data"].empty?
+        account = OpenStruct.new(output['data'].first)
         @accounts.where(address: account.address).update(balance: account.balance)
         r.redirect '/account/show'
       end
