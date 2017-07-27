@@ -24,7 +24,7 @@ GET request
 
 >curl http://localhost:9393/account/show
 
--- Shows records size saved in db
+-- Shows records from db in JSON format
 
 POST request
 
