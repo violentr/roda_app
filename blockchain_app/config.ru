@@ -31,8 +31,8 @@ class BlockChainApp < Roda
         output = ::JSON.parse(response.body)
         account = OpenStruct.new(output['data']&.first)
         return {} if output["data"].empty?
-        @accounts.insert(address: account.address, balance: account.balance)
-        r.redirect '/accounts/show'
+        @accounts.where(address: account.address).update(balance: account.balance)
+        r.redirect '/account/show'
       end
     end
   end
